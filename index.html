@@ -29,6 +29,7 @@
             ];
 
             const render = () => {
+                clearCanvas();
                 drawSnake();
             };
 
@@ -42,6 +43,12 @@
 
             const drawSnake = () => {
                 snake.forEach(drawSnakePart);
+            };
+
+            const clearCanvas = () => {
+                context.fillStyle = 'white';
+
+                context.fillRect(0, 0, canvas.width, canvas.height);
             };
 
             render();
