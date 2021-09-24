@@ -19,6 +19,10 @@
         <canvas id="snakeGame" width="400" height="400"></canvas>
 
         <script>
+            const boardBackground = 'white';
+            const snakeColor = 'lightblue';
+            const snakeBorder = 'darkblue';
+
             const canvas = document.getElementById('snakeGame');
             const context = canvas.getContext('2d');
             const snake = [
@@ -34,8 +38,8 @@
             };
 
             const drawSnakePart = snakePart => {
-                context.fillStyle = 'lightblue';
-                context.strokeStyle = 'darkblue';
+                context.fillStyle = snakeColor;
+                context.strokeStyle = snakeBorder;
 
                 context.fillRect(snakePart.x, snakePart.y, 10, 10);
                 context.strokeRect(snakePart.x, snakePart.y, 10, 10);
@@ -46,7 +50,7 @@
             };
 
             const clearCanvas = () => {
-                context.fillStyle = 'white';
+                context.fillStyle = boardBackground;
 
                 context.fillRect(0, 0, canvas.width, canvas.height);
             };
