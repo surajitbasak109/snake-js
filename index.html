@@ -38,25 +38,32 @@
             let changing_direction = false;
 
             let score = 0;
+            const SIZE = 10;
 
-            let dx = 10;
+            let dx = SIZE;
             let dy = 0;
 
             let food_x;
             let food_y;
 
+
             const boardBackground = 'white';
             const snakeColor = 'lightblue';
             const snakeBorder = 'darkblue';
+            const foodColor = "lightgreen";
+            const foodBorder = "darkgreen";
 
             const canvas = document.getElementById('snakeGame');
             const context = canvas.getContext('2d');
             const snake = [
                 { x: 200, y: 200 },
-                { x: 190, y: 200 },
-                { x: 180, y: 200 },
-                { x: 170, y: 200 },
+                { x: 200 - SIZE, y: 200 },
+                { x: 200 - SIZE, y: 200 },
+                { x: 200 - SIZE, y: 200 },
             ];
+
+            const BOARD_WIDTH = canvas.width;
+            const BOARD_HEIGHT = canvas.height;
 
             const render = () => {
                 if (hasGameEnded()) {
@@ -80,8 +87,8 @@
                 context.fillStyle = snakeColor;
                 context.strokeStyle = snakeBorder;
 
-                context.fillRect(snakePart.x, snakePart.y, 10, 10);
-                context.strokeRect(snakePart.x, snakePart.y, 10, 10);
+                context.fillRect(snakePart.x, snakePart.y, SIZE, SIZE);
+                context.strokeRect(snakePart.x, snakePart.y, SIZE, SIZE);
             };
 
             const drawSnake = () => {
@@ -91,7 +98,7 @@
             const clearCanvas = () => {
                 context.fillStyle = boardBackground;
 
-                context.fillRect(0, 0, canvas.width, canvas.height);
+                context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
             };
 
             const moveSnake = () => {
@@ -114,9 +121,9 @@
                 }
 
                 const hitLeftWall = snake[0].x < 0;
-                const hitRightWall = snake[0].x > canvas.width - 10;
+                const hitRightWall = snake[0].x > BOARD_WIDTH - SIZE;
                 const hitTopWall = snake[0].y < 0;
-                const hitBottomWall = snake[0].y > canvas.height - 10;
+                const hitBottomWall = snake[0].y > BOARD_HEIGHT - SIZE;
 
                 return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall;
             };
@@ -132,39 +139,39 @@
                 if (changing_direction) return;
                 changing_direction = true;
 
-                const goingUp = dy === -10;
-                const goingDown = dy === 10;
-                const goingLeft = dx === -10;
-                const goingRight = dx === 10;
+                const goingUp = dy === -SIZE;
+                const goingDown = dy === SIZE;
+                const goingLeft = dx === -SIZE;
+                const goingRight = dx === SIZE;
 
                 if (keyPressed === LEFT_KEY && !goingRight) {
-                    dx = -10;
+                    dx = -SIZE;
                     dy = 0;
                 }
 
                 if (keyPressed === RIGHT_KEY && !goingLeft) {
-                    dx = 10;
+                    dx = SIZE;
                     dy = 0;
                 }
 
                 if (keyPressed === UP_KEY && !goingDown) {
                     dx = 0;
-                    dy = -10;
+                    dy = -SIZE;
                 }
 
                 if (keyPressed === DOWN_KEY && !goingUp) {
                     dx = 0;
-                    dy = 10;
+                    dy = SIZE;
                 }
             };
 
             const randomFood = (min, max) => {
-                return Math.round((Math.random() * (max - min) + min) / 10) * 10;
+                return Math.round((Math.random() * (max - min) + min) / SIZE) * SIZE;
             };
 
             const generateFood = () => {
-                food_x = randomFood(0, canvas.width - 10);
-                food_y = randomFood(0, canvas.height - 10);
+                food_x = randomFood(0, BOARD_WIDTH - SIZE);
+                food_y = randomFood(0, BOARD_HEIGHT - SIZE);
 
                 snake.forEach(part => {
                     if (part.x == food_x && part.y == food_y) generateFood();
@@ -172,11 +179,11 @@
             };
 
             const drawFood = () => {
-                context.fillStyle = 'lightgreen';
-                context.strokeStyle = 'darkgreen';
+                context.fillStyle = foodColor;
+                context.strokeStyle = foodBorder;
 
-                context.fillRect(food_x, food_y, 10, 10);
-                context.strokeRect(food_x, food_y, 10, 10);
+                context.fillRect(food_x, food_y, SIZE, SIZE);
+                context.strokeRect(food_x, food_y, SIZE, SIZE);
             };
 
             const updateScore = () => {
