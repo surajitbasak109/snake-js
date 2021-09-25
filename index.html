@@ -19,6 +19,7 @@
         <canvas id="snakeGame" width="400" height="400"></canvas>
 
         <script>
+            let changing_direction = false;
             let dx = 10;
             let dy = 0;
 
@@ -37,6 +38,8 @@
 
             const render = () => {
                 if (hasGameEnded()) return;
+
+                changing_direction = false;
 
                 setTimeout(() => {
                     clearCanvas();
@@ -86,6 +89,44 @@
                 return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall;
             };
 
+            const changeDirection = evt => {
+                const keyPressed = evt.keyCode;
+
+                const LEFT_KEY = 37;
+                const UP_KEY = 38;
+                const RIGHT_KEY = 39;
+                const DOWN_KEY = 40;
+
+                if (changing_direction) return;
+                changing_direction = true;
+
+                const goingUp = dy === -10;
+                const goingDown = dy === 10;
+                const goingLeft = dx === -10;
+                const goingRight = dx === 10;
+
+                if (keyPressed === LEFT_KEY && !goingRight) {
+                    dx = -10;
+                    dy = 0;
+                }
+
+                if (keyPressed === RIGHT_KEY && !goingLeft) {
+                    dx = 10;
+                    dy = 0;
+                }
+
+                if (keyPressed === UP_KEY && !goingDown) {
+                    dx = 0;
+                    dy = -10;
+                }
+
+                if (keyPressed === DOWN_KEY && !goingUp) {
+                    dx = 0;
+                    dy = 10;
+                }
+            };
+
+            window.addEventListener('keydown', changeDirection);
             render();
         </script>
     </body>
