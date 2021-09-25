@@ -20,8 +20,12 @@
 
         <script>
             let changing_direction = false;
+            
             let dx = 10;
             let dy = 0;
+
+            let food_x;
+            let food_y; 
 
             const boardBackground = 'white';
             const snakeColor = 'lightblue';
@@ -43,6 +47,7 @@
 
                 setTimeout(() => {
                     clearCanvas();
+                    drawFood();
                     moveSnake();
                     drawSnake();
 
@@ -126,8 +131,30 @@
                 }
             };
 
+            const randomFood = (min, max) => {
+                return Math.round((Math.random() * (max - min) + min) / 10) * 10;
+            };
+
+            const generateFood = () => {
+                food_x = randomFood(0, canvas.width - 10);
+                food_y = randomFood(0, canvas.height - 10);
+
+                snake.forEach(part => {
+                    if (part.x == food_x && part.y == food_y) generateFood();
+                });
+            };
+
+            const drawFood = () => {
+                context.fillStyle = 'lightgreen';
+                context.strokeStyle = 'darkgreen';
+
+                context.fillRect(food_x, food_y, 10, 10);
+                context.strokeRect(food_x, food_y, 10, 10);
+            };
+
             window.addEventListener('keydown', changeDirection);
             render();
+            generateFood();
         </script>
     </body>
 </html>
